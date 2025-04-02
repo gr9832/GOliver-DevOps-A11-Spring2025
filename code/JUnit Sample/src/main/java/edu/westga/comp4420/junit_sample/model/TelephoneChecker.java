@@ -15,12 +15,12 @@ public class TelephoneChecker {
 	public boolean verifyNumber(long number) {
 		if (number < 1000000L) {
 			return false;
-		} else if (number < 9999999L) {
-			return false;
+		} else if (number <= 9999999L) {
+			return true;
 		} else if (number < 1000000000L) {
 			return false;
 		} else {
-			return number < 9999999999L;
+			return number <= 9999999999L;
 		} 
 	}
 	
@@ -42,6 +42,28 @@ public class TelephoneChecker {
 	 * 			false	if number does not match heuristics for potential spam
 	 */
 	public boolean identifySpam(long number) {
-		return false;
+		if (!this.verifyNumber(number)) {
+			throw new IllegalArgumentException("Error: invalid phone number");
+		}
+		
+		long areaCode = number / 10000000;
+    
+	    boolean isSpam = false;
+
+		if (areaCode == 999) {
+			isSpam = true;
+		} else if (areaCode == 900) {
+			isSpam = true;
+		} else if (areaCode == 888) {
+			isSpam = true;
+		} else if (areaCode == 800) {
+			isSpam = true;
+		} else if (areaCode == 911) {
+			isSpam = true;
+		} else if (areaCode == 411) {
+			isSpam = true;
+		}
+		
+		return isSpam;
 	}
 }
